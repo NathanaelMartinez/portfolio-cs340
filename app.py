@@ -1,9 +1,12 @@
 from flask import Flask, render_template
+import database.db_connector as db
 import os
 
 # Configuration
 
 app = Flask(__name__)
+
+db_connection = db.connect_to_database()
 
 people_from_app_py = [
     {
@@ -36,7 +39,11 @@ people_from_app_py = [
 
 @app.route('/')
 def root():
-    return render_template("main.j2", people=people_from_app_py)
+    return render_template("main.j2")
+
+@app.route('/bsg-people')
+def bsg_people():
+    return "This is the bsg-people route."
 
 # Listener
 
