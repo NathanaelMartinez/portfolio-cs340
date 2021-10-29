@@ -1,0 +1,61 @@
+
+<div class="blood-bank">
+    <section class="info">
+        <h3>Donor Database</h3>
+        <p>
+            This page will allow you to update information about the donors in your system
+        </p>
+    </section>
+    <section class="add-entry">
+        <h3>Add Entry</h3>
+        <form>
+            <label for="fName">First name</label><br>
+            <input size="15" type="text" id="fName" name="fName"><br>
+            <label for="lName">Last name</label><br>
+            <input size="15" type="text" id="lName" name="lName"><br>
+            <label for="phone">Phone</label><br>
+            <input size="15" type="tel" id="phone" name="phone"><br>
+            <label for="email">E-mail</label><br>
+            <input size="15" type="email" id="email" name="email"><br>
+            <label for="dob">Date of birth</label><br>
+            <input size="15" type="date" id="dob" name="dob"><br>
+            <label for="bType">Blood type</label><br>
+            <input size="15" maxlength="3" type="text" id="bType" name="bType"><br><br>
+            <input type="submit" id="submitEntry" value="Add Entry">
+        </form>
+    </section>
+    <<section class="entry-display">
+        <h3>Donors</h3>
+        <table id="entry-list">
+            <tr>
+                <th>Entry ID</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Phone</th>
+                <th>E-mail</th>
+                <th>Date of birth</th>
+                <th>Blood type</th>
+                <th>Donations</th>
+                <th id="delete-column"> </th>
+                <th id="edit-column"> </th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>John</th>
+                <th>Doe</th>
+                <th>555-456-7894</th>
+                <th>jdoe@hotmail.com</th>
+                <th>08/09/1965</th>
+                <th>O-</th>
+                <th>15</th>
+                <th id="delete-column">
+                    <button type="submit">Delete</button>
+                </th>
+                <th id="edit-column">
+                    <button type="submit">Update</button>
+                </th>
+            </tr>
+        </table>
+    </section>
+    <hr>
+</div>
