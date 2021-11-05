@@ -9,9 +9,11 @@
     <section class="add-entry">
         <h3>Add Entry</h3>
         <form>
+            <label for="bank-id">Blood Bank ID</label><br>
+            <input size="15" type="number" id="bank-id" name="bank-id"><br>
             <label for="date">Drive Date</label><br>
             <input size="15" type="date" id="date" name="date"><br>
-            <label for="amt-donated">Amount Donated</label><br>
+            <label for="amt-donated">Amount Collected</label><br>
             <input size="15" type="number" id="amt-donated" name="amt-donated"><br>
             <label for="city">City</label><br>
             <input size="15" type="text" id="city" name="city"><br>
@@ -20,14 +22,14 @@
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
-    <<section class="entry-display">
+    <section class="entry-display">
         <h3>Blood Drives</h3>
         <table id="entry-list">
             <tr>
-                <th>Entry ID</th>
-                <th>Host Name</th>
+                <th>Blood Drive ID</th>
+                <th>Blood Bank ID</th>
                 <th>Date</th>
-                <th>Amount (in blood units)</th>
+                <th>Amount Collected</th>
                 <th>City</th>
                 <th>Zip</th>
                 <th id="delete-column"> </th>
@@ -35,7 +37,7 @@
             </tr>
             <tr>
                 <th>1</th>
-                <th>Mercy Health Center</th>
+                <th>1</th>
                 <th>11/12/2021</th>
                 <th>332</th>
                 <th>Spokane</th>
@@ -49,5 +51,84 @@
             </tr>
         </table>
     </section>
-    <hr>
+    <section class="blood-drive-donors">
+        <label for="blood-drive-donors">Select a Blood Drive ID to view Donors</label>
+        <select name="blood-drives-donors" id="blood-drive-donors">
+            <option value="0">None</option>
+            <option value="1">1</option>
+        </select>
+        <div class="driveTable hiddenTable" data-id="1">
+            <table>
+                <tr>
+                    <th>Entry ID</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Phone</th>
+                    <th>E-mail</th>
+                    <th>Date of birth</th>
+                    <th>Blood type</th>
+                    <th>Donations</th>
+                    <th id="delete-column"> </th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>John</th>
+                    <th>Doe</th>
+                    <th>555-456-7894</th>
+                    <th>jdoe@hotmail.com</th>
+                    <th>08/09/1965</th>
+                    <th>O-</th>
+                    <th>15</th>
+                    <th id="delete-column">
+                        <button type="submit">Delete</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <th>James</th>
+                    <th>Smith</th>
+                    <th>555-467-2134</th>
+                    <th>jsmith@hotmail.com</th>
+                    <th>07/05/1957</th>
+                    <th>O+</th>
+                    <th>5</th>
+                    <th id="delete-column">
+                        <button type="submit">Delete</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <th>Margaret</th>
+                    <th>Garcia</th>
+                    <th>555-896-1454</th>
+                    <th>mgarcia@hotmail.com</th>
+                    <th>04/08/1974</th>
+                    <th>AB+</th>
+                    <th>2</th>
+                    <th id="delete-column">
+                        <button type="submit">Delete</button>
+                    </th>
+                </tr>
+            </table>
+            <form>
+                <label for="add-drive-donor">Add Donor by ID to selected Blood Drive</label>
+                <input size="15" type="number" id="add-drive-donor" name="add-drive-donor"><br><br>
+                <input type="submit" id="add-drive-donor" value="add-drive-donor">
+            </form>
+        </div>
+    </section>
 </div>
+<script>
+    document.addEventListener('input', function (event) {
+        hideAllTables();
+        var tableId = event.target.value;
+        document.querySelector('[data-id="'+tableId+'"]').classList.remove("hiddenTable");
+    }, false);
+
+    var hideAllTables = () => {
+        var tables = document.querySelectorAll('.driveTable');
+        for (var i = 0; i < tables.length; i++) {
+            tables[i].classList.add('hiddenTable');
+        }
+    };
+</script>

@@ -9,6 +9,12 @@
     <section class="add-entry">
         <h3>Add Entry</h3>
         <form>
+            <label for="bank-id">Blood Bank ID</label><br>
+            <input size="15" type="number" id="bank-id" name="bank-id"><br>
+            <label for="donor-id">Donor ID</label><br>
+            <input size="15" type="number" id="donor-id" name="donor-id"><br>
+            <label for="request-id">Request ID</label><br>
+            <input size="15" type="number" id="request-id" name="request-id"><br>
             <label for="amount">Amount donated</label><br>
             <input size="15" type="number" id="amount" name="amount"><br>
             <label for="date-collected">Date collected</label><br>
@@ -17,23 +23,23 @@
         </form>
     </section>
     <<section class="entry-display">
-        <h3>Blood Banks</h3>
+        <h3>Blood Donations</h3>
         <table id="entry-list">
             <tr>
-                <th>Entry ID</th>
-                <th>Blood Bank</th>
-                <th>Donor</th>
-                <th>Requested by</th>
-                <th>Amount of donation</th>
+                <th>Donation ID</th>
+                <th>Blood Bank ID</th>
+                <th>Donor ID</th>
+                <th>Request ID (Optional)</th>
+                <th>Amount of Donation (in blood units)</th>
                 <th>Date collected</th>
                 <th id="delete-column"> </th>
                 <th id="edit-column"> </th>
             </tr>
             <tr>
                 <th>1</th>
-                <th>Mercy Health Center</th>
-                <th>John Doe</th>
-                <th>Mercy Hospital</th>
+                <th>1</th>
+                <th>3</th>
+                <th>NULL</th>
                 <th>3</th>
                 <th>10/28/2021</th>
                 <th id="delete-column">

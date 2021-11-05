@@ -49,7 +49,7 @@ th, td {
 
 .entry-display {
   position: absolute;
-  right: 250px;
+  left: 335px;
   top: 165px;
 }
 
@@ -58,4 +58,20 @@ th, td {
   margin-left: 100px;
   margin-right: 150px;
   margin-top: 50px;
+}
+
+.bTypeSearch {
+  position: relative;
+  left: 335px;
+  margin-bottom: 100px;
+}
+
+.blood-drive-donors {
+  position: relative;
+  left: 335px;
+  margin-bottom: 100px;
+}
+
+.hiddenTable {
+  display: none;
 }

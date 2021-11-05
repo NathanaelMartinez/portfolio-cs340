@@ -9,23 +9,23 @@
     <section class="add-entry">
         <h3>Add Entry</h3>
         <form>
-            <label for ="hospital">Hospital</label><br>
+            <label for ="hospital">Hospital ID</label><br>
             <input size = "15" type = "text" id = "hospital" name="hospital"><br>
             <label for="amount">Amount Requested</label><br>
             <input size="15" maxlength="8" type="number" id="amount" name="amount"><br>
-            <label for="bType">Blood Type:</label><br>
+            <label for="bType">Blood Type</label><br>
             <input size="15" maxlength="3" type="text" id="bType" name="bType"><br>
-            <!-- <label for="filled(yes/no)">Filled(yes/no)</label><br>
-            <input size="15" type="checkbox" id="filled" name="filled"><br>--><br>
+            <label for="filled(yes/no)">Request Filled</label><br>
+            <input size="15" type="checkbox" id="filled" name="filled"><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
     <<section class="entry-display">
-    <h3>Request</h3>
+    <h3>Requests</h3>
     <table id="entry-list">
         <tr>
-            <th>Entry ID</th>
-            <th>Hospital</th>
+            <th>Request ID</th>
+            <th>Hospital ID</th>
             <th>Amount Requested (in blood units)</th>
             <th>Blood Type</th>
             <th>Filled</th>
@@ -34,7 +34,7 @@
         </tr>
         <tr>
             <th>1</th>
-            <th>Mercy Hospital</th>
+            <th>1</th>
             <th>150</th>
             <th>A+</th>
             <th>No</th>
@@ -47,5 +47,4 @@
         </tr>
     </table>
 </section>
-    <hr>
 </div>
