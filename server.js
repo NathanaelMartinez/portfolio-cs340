@@ -135,7 +135,7 @@ app.get('/donations',function(req,res){
     context.isDonor = false
     context.isDonation = true
     context.isRequest = false
-    mysql.pool.query('SELECT bank_id, name FROM Blood_banks', function(err, bank_results, fields){
+    /* mysql.pool.query('SELECT bank_id, name FROM Blood_banks', function(err, bank_results, fields){
         if(err){
             next(err);
             return;
@@ -162,8 +162,9 @@ app.get('/donations',function(req,res){
             return;
         }
         context.donations = results;
-        res.render('donation', context);
-    });
+
+    }); */
+    res.render('donation', context);
 });
 
 app.get('/requests',function(req,res){
