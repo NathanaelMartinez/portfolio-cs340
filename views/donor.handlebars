@@ -1,4 +1,3 @@
-
 <div class="blood-bank">
     <section class="info">
         <h3>Donor Database</h3>
@@ -8,87 +7,61 @@
     </section>
     <section class="add-entry">
         <h3>Add Entry</h3>
-        <form>
-            <label for="fName">First name</label><br>
-            <input size="15" type="text" id="fName" name="fName"><br>
-            <label for="lName">Last name</label><br>
-            <input size="15" type="text" id="lName" name="lName"><br>
+        <form id='add-donor' action="/donors" method="POST">
+            <label for="first_name">First name</label><br>
+            <input size="15" type="text" id="first_name" name="first_name"><br>
+            <label for="last_name">Last name</label><br>
+            <input size="15" type="text" id="last_name" name="last_name"><br>
             <label for="phone">Phone (optional)</label><br>
             <input size="15" type="tel" id="phone" name="phone"><br>
             <label for="email">E-mail (optional)</label><br>
             <input size="15" type="email" id="email" name="email"><br>
             <label for="dob">Date of birth</label><br>
-            <input size="15" type="date" id="dob" name="dob"><br>
+            <input size="15" type="date" id="donor_dob" name="donor_DOB"><br>
             <label for="bType">Blood type</label><br>
-            <input size="15" maxlength="3" type="text" id="bType" name="bType"><br>
+            <input size="15" maxlength="3" type="text" id="blood_type" name="blood_type"><br>
             <label for="nDonations">Number of Donations</label><br>
-            <input size="15" type="number" id="nDonations" name="nDonations"><br><br>
+            <input size="15" type="number" id="times_donated" name="times_donated"><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
     <section class="entry-display">
         <h3>Donors</h3>
         <table id="entry-list">
-            <tr>
-                <th>Donor ID</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Phone</th>
-                <th>E-mail</th>
-                <th>Date of birth</th>
-                <th>Blood type</th>
-                <th>Donations</th>
-                <th id="delete-column"> </th>
-                <th id="edit-column"> </th>
-            </tr>
-            <tr>
-                <th>1</th>
-                <th>John</th>
-                <th>Doe</th>
-                <th>555-456-7894</th>
-                <th>jdoe@hotmail.com</th>
-                <th>08/09/1965</th>
-                <th>O-</th>
-                <th>15</th>
-                <th id="delete-column">
-                    <button type="submit">Delete</button>
-                </th>
-                <th id="edit-column">
-                    <button type="submit">Update</button>
-                </th>
-            </tr>
-            <tr>
-                <th>2</th>
-                <th>James</th>
-                <th>Smith</th>
-                <th>555-467-2134</th>
-                <th>jsmith@hotmail.com</th>
-                <th>07/05/1957</th>
-                <th>O+</th>
-                <th>5</th>
-                <th id="delete-column">
-                    <button type="submit">Delete</button>
-                </th>
-                <th id="edit-column">
-                    <button type="submit">Update</button>
-                </th>
-            </tr>
-            <tr>
-                <th>3</th>
-                <th>Margaret</th>
-                <th>Garcia</th>
-                <th>555-896-1454</th>
-                <th>mgarcia@hotmail.com</th>
-                <th>04/08/1974</th>
-                <th>AB+</th>
-                <th>2</th>
-                <th id="delete-column">
-                    <button type="submit">Delete</button>
-                </th>
-                <th id="edit-column">
-                    <button type="submit">Update</button>
-                </th>
-            </tr>
+            <thead>
+                <tr>
+                    <th>Donor ID</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Phone</th>
+                    <th>E-mail</th>
+                    <th>Date of birth</th>
+                    <th>Blood type</th>
+                    <th>Donations</th>
+                    <th id="delete-column"> </th>
+                    <th id="edit-column"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each donors}}
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{ifNull this.phone}}</td>
+                        <td>{{ifNull this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}">Edit</a>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
         </table>
     </section>
     <section class="bTypeSearch">
@@ -104,6 +77,7 @@
             <option value="7">AB-</option>
             <option value="8">AB+</option>
         </select>
+        <br><br>
         <table class="bTypeTable hiddenTable" data-id="1">
             <tr>
                 <th>Entry ID</th>

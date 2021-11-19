@@ -1,16 +1,38 @@
 var express = require('express');
+var mysql = require('./db-connector')
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
+
+handlebars.handlebars.registerHelper('dateFormat', function (value) {
+    return value.toLocaleDateString();
+});
+
+handlebars.handlebars.registerHelper('yesNo', function (value) {
+    if (value === 1) {
+        return "Yes";
+    } else {
+        return "No";
+    }
+});
+
+handlebars.handlebars.registerHelper('ifNull', function (value) {
+    if (value == null) {
+        return "None";
+    } else {
+        return value;
+    }
+});
+
 app.set('port', 1470);
 
 var bodyParser = require('body-parser');
 
-//app.use(bodyParser.urlencoded({ extended: false }));
-//app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(express.static('public'))
 
@@ -35,7 +57,28 @@ app.get('/blood-banks',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = false
-    res.render('bank', context);
+    mysql.pool.query('SELECT bank_id, name, city, street, zip, phone FROM Blood_banks', function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.banks = results;
+        res.render('bank', context);
+    });
+});
+
+/* Adds a blood bank, redirects to the blood banks page after adding */
+
+app.post('/blood-banks',function(req,res,next){
+    var sql = "INSERT INTO Blood_banks (`name`,`city`,`street`,`zip`,`phone`) VALUES (?,?,?,?,?)";
+    var inserts = [req.body.name,req.body.city,req.body.street,req.body.zip,req.body.phone];
+    mysql.pool.query(sql, inserts, function(err, results){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/blood-banks');
+    });
 });
 
 app.get('/blood-drives',function(req,res){
@@ -59,7 +102,28 @@ app.get('/donors',function(req,res){
     context.isDonor = true
     context.isDonation = false
     context.isRequest = false
-    res.render('donor', context);
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors', function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.donors = results;
+        res.render('donor', context);
+    });
+});
+
+/* Adds a donor, redirects to the donor page after adding */
+
+app.post('/donors',function(req,res,next){
+    var sql = "INSERT INTO Donors (`first_name`,`last_name`,`phone`,`email`,`donor_DOB`, `blood_type`, `times_donated`) VALUES (?,?,?,?,?,?,?)";
+    var inserts = [req.body.first_name,req.body.last_name,req.body.phone,req.body.email,req.body.donor_DOB,req.body.blood_type,req.body.times_donated];
+    mysql.pool.query(sql, inserts, function(err, results){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/donors');
+    });
 });
 
 app.get('/donations',function(req,res){
@@ -71,7 +135,35 @@ app.get('/donations',function(req,res){
     context.isDonor = false
     context.isDonation = true
     context.isRequest = false
-    res.render('donation', context);
+    mysql.pool.query('SELECT bank_id, name FROM Blood_banks', function(err, bank_results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.banks = bank_results;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name FROM Blood_banks', function(err, donor_results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.donors = donor_results;
+    });
+    mysql.pool.query('SELECT request_id, request_type, request_date FROM Requests', function(err, request_results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.requests = request_results;
+    });
+    mysql.pool.query('SELECT donation_id, Blood_banks.name, Donors.first_name, Donors.last_name, Donors.blood_type, Requests.request_type, Requests.request_date, amt_donated, date_collected FROM Donations INNER JOIN Blood_banks ON Donations.bank_id = Blood_banks.bank_id INNER JOIN Donors ON Donations.donor_id = Donors.donor_id', function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.donations = results;
+        res.render('donation', context);
+    });
 });
 
 app.get('/requests',function(req,res){
@@ -83,7 +175,35 @@ app.get('/requests',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = true
-    res.render('request', context);
+    mysql.pool.query('SELECT hospital_id, name FROM Hospitals', function(err, hospital_results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.hospitals = hospital_results;
+    });
+    mysql.pool.query('SELECT request_id, request_amt, request_type, request_date, request_filled, Hospitals.name FROM Requests INNER JOIN Hospitals ON Requests.hospital_id = Hospitals.hospital_id', function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.requests = results;
+        res.render('request', context);
+    });
+});
+
+/* Adds a request, redirects to the requests page after adding */
+
+app.post('/requests',function(req,res,next){
+    var sql = "INSERT INTO Requests (`hospital_id`,`request_amt`,`request_type`,`request_date`,`request_filled`) VALUES (?,?,?,?,?)";
+    var inserts = [req.body.hospital_id,req.body.request_amt,req.body.request_type,req.body.request_date,req.body.request_filled];
+    mysql.pool.query(sql, inserts, function(err, results){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/requests');
+    });
 });
 
 app.get('/hospitals',function(req,res){
@@ -95,7 +215,28 @@ app.get('/hospitals',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = false
-    res.render('hospital', context);
+    mysql.pool.query('SELECT hospital_id, name, city, zip, phone FROM Hospitals', function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.hospitals = results;
+        res.render('hospital', context);
+    });
+});
+
+/* Adds a hospital, redirects to the hospital page after adding */
+
+app.post('/hospitals',function(req,res,next){
+    var sql = "INSERT INTO Hospitals (`name`,`city`,`zip`,`phone`) VALUES (?,?,?,?)";
+    var inserts = [req.body.name,req.body.city,req.body.zip,req.body.phone];
+    mysql.pool.query(sql, inserts, function(err, results){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/hospitals');
+    });
 });
 
 app.use(function(req,res){

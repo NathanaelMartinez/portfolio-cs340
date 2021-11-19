@@ -273,6 +273,7 @@
       "resolved": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz",
       "version": "2.0.0"
     },
+    "mysql": "^2.18.1",
     "negotiator": {
       "integrity": "sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==",
       "resolved": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.2.tgz",
