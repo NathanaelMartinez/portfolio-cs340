@@ -19,14 +19,14 @@ handlebars.handlebars.registerHelper('yesNo', function (value) {
     }
 });
 
-/*
+
 handlebars.handlebars.registerHelper('ifNull', function (value) {
     if (value == null) {
         return "None";
     } else {
         return value;
     }
-}); */
+});
 
 app.set('port', 1470);
 
@@ -232,7 +232,7 @@ app.get('/donations',function(req,res){
         }
         context.banks = bank_results;
     });
-    mysql.pool.query('SELECT donor_id, first_name, last_name FROM Donors', function(err, donor_results, fields){
+    mysql.pool.query('SELECT donor_id, first_name, last_name, blood_type FROM Donors', function(err, donor_results, fields){
         if(err){
             next(err);
             return;
@@ -246,13 +246,25 @@ app.get('/donations',function(req,res){
         }
         context.requests = request_results;
     });
-    mysql.pool.query('SELECT donation_id, Blood_banks.name, Donors.first_name, Donors.last_name, Donors.blood_type, Requests.request_type, Requests.request_date, amt_donated, date_collected FROM Donations INNER JOIN Blood_banks ON Donations.bank_id = Blood_banks.bank_id INNER JOIN Donors ON Donations.donor_id = Donors.donor_id INNER JOIN Requests ON Donations.request_id = Requests.request_id', function(err, results, fields){
+    mysql.pool.query('SELECT donation_id, Blood_banks.name, Donors.first_name, Donors.last_name, Donors.blood_type, Requests.request_id, amt_donated, date_collected FROM Donations INNER JOIN Blood_banks ON Donations.bank_id = Blood_banks.bank_id INNER JOIN Donors ON Donations.donor_id = Donors.donor_id LEFT JOIN Requests ON Donations.request_id = Requests.request_id', function(err, results, fields){
         if(err){
             next(err);
             return;
         }
         context.donations = results;
         res.render('donation', context);
+    });
+});
+
+app.post('/donations',function(req,res,next){
+    var sql = "INSERT INTO Donations (`bank_id`,`donor_id`,`request_id`,`amt_donated`,`date_collected`) VALUES (?,?,?,?,?)";
+    var inserts = [req.body.bank_id,req.body.donor_id,req.body.request_id,req.body.amt_donated,req.body.date_collected];
+    mysql.pool.query(sql, inserts, function(err, results){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/donations');
     });
 });
 

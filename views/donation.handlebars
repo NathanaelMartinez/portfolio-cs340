@@ -27,7 +27,7 @@
             <select name="request_id" id="request_id">
                 <option value=""></option>
                 {{#each requests}}
-                    <option value="{{this.request_id}}">{{this.request_type}} {{dateFormat this.request_date}}</option>
+                    <option value="{{this.request_id}}">{{this.request_id}} ({{this.request_type}} {{dateFormat this.request_date}})</option>
                 {{/each}}
             </select><br>
             <label for="amt_donated">Amount donated</label><br>
@@ -60,7 +60,7 @@
                     <td>{{this.name}}</td>
                     <td>{{this.first_name}} {{this.last_name}}</td>
                     <td>{{this.blood_type}}</td>
-                    <td>{{this.request_type}} {{dateFormat this.request_date}}</td>
+                    <td>{{ifNull this.request_id}}</td>
                     <td>{{this.amt_donated}}</td>
                     <td>{{dateFormat this.date_collected}}</td>
                     <td class="delete-column">
