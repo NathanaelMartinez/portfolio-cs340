@@ -10,15 +10,15 @@
         <h3>Add Entry</h3>
         <form id="add-bank" action="/blood-banks" method="POST">
             <label for="name">Name</label><br>
-            <input size="15" type="text" id="name" name="name"><br>
+            <input size="15" type="text" pattern=[a-z]{5-40} id="name" name="name" required><br>
             <label for="city">City</label><br>
-            <input size="15" type="text" id="city" name="city"><br>
+            <input size="15" type="text" pattern=[a-z]{2-40} id="city" name="city" required><br>
             <label for="street">Street</label><br>
-            <input size="15" type="text" id="street" name="street"><br>
+            <input size="15" type="text" pattern=[a-z]{4-40} id="street" name="street" required><br>
             <label for="zip">Zip Code</label><br>
-            <input size="15" maxlength="5" type="number" id="zip" name="zip"><br>
+            <input size="15" type="text" pattern=[0-9]{5} id="zip" name="zip" required><br>
             <label for="phone">Phone</label><br>
-            <input size="15" type="tel" id="phone" name="phone"><br><br>
+            <input size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone" required><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>

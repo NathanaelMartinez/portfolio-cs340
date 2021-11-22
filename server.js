@@ -19,13 +19,14 @@ handlebars.handlebars.registerHelper('yesNo', function (value) {
     }
 });
 
+/*
 handlebars.handlebars.registerHelper('ifNull', function (value) {
     if (value == null) {
         return "None";
     } else {
         return value;
     }
-});
+}); */
 
 app.set('port', 1470);
 
@@ -90,7 +91,40 @@ app.get('/blood-drives',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = false
-    res.render('drive', context);
+    mysql.pool.query('SELECT bank_id, name FROM Blood_banks', function(err, bank_results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.banks = bank_results;
+    });
+    mysql.pool.query('SELECT Blood_drives.drive_id, Blood_drives.drive_date, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors INNER JOIN Blood_drive_donors ON Donors.donor_id=Blood_drive_donors.donor_id INNER JOIN Blood_drives ON Blood_drive_donors.drive_id = Blood_drives.drive_id', function(err, blood_drive_donor_results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.blood_drive_donors = blood_drive_donor_results;
+    });
+    mysql.pool.query('SELECT drive_id, Blood_banks.name, drive_date, amt_collected, Blood_drives.city, Blood_drives.zip FROM Blood_drives INNER JOIN Blood_banks ON Blood_drives.bank_id = Blood_banks.bank_id', function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.drives = results;
+        res.render('drive', context);
+    });
+});
+
+app.post('/blood-drives',function(req,res,next){
+    var sql = "INSERT INTO Blood_drives (`bank_id`,`drive_date`,`amt_collected`,`city`,`zip`) VALUES (?,?,?,?,?)";
+    var inserts = [req.body.bank_id,req.body.drive_date,req.body.amt_collected,req.body.city,req.body.zip];
+    mysql.pool.query(sql, inserts, function(err, results){
+        if(err){
+            next(err);
+            return;
+        }
+        res.redirect('/blood-drives');
+    });
 });
 
 app.get('/donors',function(req,res){
@@ -102,6 +136,62 @@ app.get('/donors',function(req,res){
     context.isDonor = true
     context.isDonation = false
     context.isRequest = false
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="O-"', function(err, o_neg, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.o_neg = o_neg;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="O+"', function(err, o_pos, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.o_pos = o_pos;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="A-"', function(err, a_neg, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.a_neg = a_neg;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="A+"', function(err, a_pos, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.a_pos = a_pos;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="B-"', function(err, b_neg, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.b_neg = b_neg;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="B+"', function(err, b_pos, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.b_pos = b_pos;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="AB-"', function(err, ab_neg, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.ab_neg = ab_neg;
+    });
+    mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE blood_type="AB+"', function(err, ab_pos, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.ab_pos = ab_pos;
+    });
     mysql.pool.query('SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors', function(err, results, fields){
         if(err){
             next(err);
@@ -135,14 +225,14 @@ app.get('/donations',function(req,res){
     context.isDonor = false
     context.isDonation = true
     context.isRequest = false
-    /* mysql.pool.query('SELECT bank_id, name FROM Blood_banks', function(err, bank_results, fields){
+    mysql.pool.query('SELECT bank_id, name FROM Blood_banks', function(err, bank_results, fields){
         if(err){
             next(err);
             return;
         }
         context.banks = bank_results;
     });
-    mysql.pool.query('SELECT donor_id, first_name, last_name FROM Blood_banks', function(err, donor_results, fields){
+    mysql.pool.query('SELECT donor_id, first_name, last_name FROM Donors', function(err, donor_results, fields){
         if(err){
             next(err);
             return;
@@ -156,15 +246,14 @@ app.get('/donations',function(req,res){
         }
         context.requests = request_results;
     });
-    mysql.pool.query('SELECT donation_id, Blood_banks.name, Donors.first_name, Donors.last_name, Donors.blood_type, Requests.request_type, Requests.request_date, amt_donated, date_collected FROM Donations INNER JOIN Blood_banks ON Donations.bank_id = Blood_banks.bank_id INNER JOIN Donors ON Donations.donor_id = Donors.donor_id', function(err, results, fields){
+    mysql.pool.query('SELECT donation_id, Blood_banks.name, Donors.first_name, Donors.last_name, Donors.blood_type, Requests.request_type, Requests.request_date, amt_donated, date_collected FROM Donations INNER JOIN Blood_banks ON Donations.bank_id = Blood_banks.bank_id INNER JOIN Donors ON Donations.donor_id = Donors.donor_id INNER JOIN Requests ON Donations.request_id = Requests.request_id', function(err, results, fields){
         if(err){
             next(err);
             return;
         }
         context.donations = results;
-
-    }); */
-    res.render('donation', context);
+        res.render('donation', context);
+    });
 });
 
 app.get('/requests',function(req,res){

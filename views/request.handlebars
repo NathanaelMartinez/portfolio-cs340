@@ -10,18 +10,28 @@
         <h3>Add Entry</h3>
         <form id='add-request' action="/requests" method="POST">
             <label for="hospital_id">Hospital</label><br>
-            <select name="hospital_id" id="hospital_id">
-                <option value="0">----               </option>
+            <select name="hospital_id" id="hospital_id" required>
+                <option disabled selected value></option>
                 {{#each hospitals}}
                     <option value="{{this.hospital_id}}">{{this.name}}</option>
                 {{/each}}
             </select><br>
             <label for="request_amt">Amount Requested</label><br>
-            <input size="15" maxlength="8" type="number" id="amount" name="request_amt"><br>
-            <label for="request_type">Blood Type</label><br>
-            <input size="15" maxlength="3" type="text" id="request-type" name="request_type"><br>
+            <input size="15" min="1" type="number" id="amount" name="request_amt" required><br>
+            <label for="request_type">Blood type</label><br>
+            <select name="request_type" id="request_type" required>
+                <option disabled selected value></option>
+                <option value="O-">O-</option>
+                <option value="O+">O+</option>
+                <option value="A-">A-</option>
+                <option value="A+">A+</option>
+                <option value="B-">B-</option>
+                <option value="B+">B+</option>
+                <option value="AB-">AB-</option>
+                <option value="AB+">AB+</option>
+            </select><br>
             <label for="request_date">Request Date</label><br>
-            <input size="15" maxlength="3" type="date" id="request-date" name="request_date"><br><br>
+            <input size="15" type="date" id="request-date" name="request_date" required><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
