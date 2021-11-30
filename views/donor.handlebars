@@ -88,6 +88,7 @@
         </select>
         <br><br>
         <table class="bTypeTable hiddenTable" data-id="1">
+            {{#if o_neg}}
             <thead>
                 <tr>
                     <th>Donor ID</th>
@@ -102,28 +103,30 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each o_neg}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="2">
+            {{#if o_pos}}
             <thead>
                 <tr>
                     <th>Donor ID</th>
@@ -138,29 +141,31 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each o_pos}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="3">
-           <thead>
+           {{#if a_neg}}
+            <thead>
                 <tr>
                     <th>Donor ID</th>
                     <th>First name</th>
@@ -174,29 +179,31 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each a_neg}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="4">
-           <thead>
+           {{#if a_pos}}
+            <thead>
                 <tr>
                     <th>Donor ID</th>
                     <th>First name</th>
@@ -210,29 +217,31 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each a_pos}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="5">
-           <thead>
+           {{#if b_neg}}
+            <thead>
                 <tr>
                     <th>Donor ID</th>
                     <th>First name</th>
@@ -246,29 +255,31 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each b_neg}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="6">
-           <thead>
+           {{#if b_pos}}
+            <thead>
                 <tr>
                     <th>Donor ID</th>
                     <th>First name</th>
@@ -282,29 +293,31 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each b_pos}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="7">
-           <thead>
+           {{#if ab_neg}}
+            <thead>
                 <tr>
                     <th>Donor ID</th>
                     <th>First name</th>
@@ -318,29 +331,31 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each ab_neg}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
         <table class="bTypeTable hiddenTable" data-id="8">
-           <thead>
+           {{#if ab_pos}}
+            <thead>
                 <tr>
                     <th>Donor ID</th>
                     <th>First name</th>
@@ -354,26 +369,27 @@
                     <th id="edit-column"> </th>
                 </tr>
             </thead>
-            <tbody>
+            {{/if}}
             {{#each ab_pos}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
-                {{/each}}
+            <tbody>
+                <tr>
+                    <td>{{this.donor_id}}</td>
+                    <td>{{this.first_name}}</td>
+                    <td>{{this.last_name}}</td>
+                    <td>{{this.phone}}</td>
+                    <td>{{this.email}}</td>
+                    <td>{{dateFormat this.donor_DOB}}</td>
+                    <td>{{this.blood_type}}</td>
+                    <td>{{this.times_donated}}</td>
+                    <td class="delete-column">
+                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                    </td>
+                    <td class="edit-column">
+                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                    </td>
+                </tr>
             </tbody>
+            {{/each}}
         </table>
     </section>
 </div>

@@ -9,7 +9,7 @@
     <section class="add-entry">
         <h3>Add Entry</h3>
         <form id='add-drive' action="/blood-drives" method="POST">
-            <label for="bank-id">Blood Bank</label><br>
+            <label for="bank_id">Blood Bank</label><br>
             <select name="bank_id" id="bank_id" required>
                 <option disabled selected value></option>
                 {{#each banks}}
@@ -63,66 +63,73 @@
         </table>
     </section>
     <section class="blood-drive-donors">
-        <label for="blood_drive_donors">Select a Blood Drive by its date to view Donors</label>
-        <select name="blood_drive_donors" id="blood_drive_donors">
-                <option>None</option>
-                {{#each blood_drive_donors}}
-                    <option value="{{this.drive_id}}">{{this.drive_id}}</option>
+        <label for="blood-drive-selector">Select a Blood Drive by its ID to view Donors</label>
+        <select name="blood-drive-selector" id="blood-drive-selector">
+                <option value="">None</option>
+                {{#each drive_selects}}
+                    <option value="{{this}}">{{this}}</option>
                 {{/each}}
             </select><br>
-        <div class="driveTable hiddenTable" data-id="1">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Donor ID</th>
-                        <th>First name</th>
-                        <th>Last name</th>
-                        <th>Phone</th>
-                        <th>E-mail</th>
-                        <th>Date of birth</th>
-                        <th>Blood type</th>
-                        <th>Donations</th>
-                        <th id="delete-column"> </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{#each donors}}
-                    <tr>
-                        <td>{{this.donor_id}}</td>
-                        <td>{{this.first_name}}</td>
-                        <td>{{this.last_name}}</td>
-                        <td>{{this.phone}}</td>
-                        <td>{{this.email}}</td>
-                        <td>{{dateFormat this.donor_DOB}}</td>
-                        <td>{{this.blood_type}}</td>
-                        <td>{{this.times_donated}}</td>
-                        <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                        </td>
-                        <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
-                        </td>
-                    </tr>
+            {{#each drive_tables}}
+            <div class="driveTable hiddenTable" data-id="{{@key}}">
+                <table id="blood-drive-table-{{@key}}">
+                    {{#if (isDefined this.[0].donor_id)}}
+                    <thead>
+                        <tr>
+                            <th>Donor ID</th>
+                            <th>First name</th>
+                            <th>Last name</th>
+                            <th>Phone</th>
+                            <th>E-mail</th>
+                            <th>Date of birth</th>
+                            <th>Blood type</th>
+                            <th>Donations</th>
+                            <th id="delete-column"> </th>
+                        </tr>
+                    </thead>
+                    {{#each this}}
+                    <tbody>
+                        <tr>
+                            <td>{{this.donor_id}}</td>
+                            <td>{{this.first_name}}</td>
+                            <td>{{this.last_name}}</td>
+                            <td>{{this.phone}}</td>
+                            <td>{{this.email}}</td>
+                            <td>{{dateFormat this.donor_DOB}}</td>
+                            <td>{{this.blood_type}}</td>
+                            <td>{{this.times_donated}}</td>
+                            <td class="delete-column">
+                                <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                            </td>
+                            <td class="edit-column">
+                                <a href="/donors/{{this.donor_id}}">Edit</a>
+                            </td>
+                        </tr>
+                    </tbody>
                     {{/each}}
-                </tbody>
-            </table>
-            <form>
-                <label for="add_drive_donor">Add Donor by Name to selected Blood Drive</label>
-                <select name="add_drive_donor" id="add_drive_donor" required>
-                <option disabled selected value></option>
-                {{#each donors}}
-                    <option value="{{this.donor_id}}">{{this.first_name}} {{this.last_name}}</option>
-                {{/each}}
-            </select>
-                <input type="submit" id="add-drive-donor" value="Add Donor">
-            </form>
-        </div>
+                    {{/if}}
+                </table>
+                <form id='add-drive-donor' action="/blood-drive-donors" method="POST">
+                    <label for="donor_id">Add donor by name to selected blood drive</label>
+                    <select name="donor_id" id="donor_id" required>
+                        <option disabled selected value></option>
+                        {{#each donor_selects}}
+                            {{#each this}}
+                            <option value="{{donor_id}}">{{first_name}} {{last_name}}</option>
+                            {{/each}}
+                        {{/each}}
+                    </select>
+                    <input type="hidden" name="drive_id" value="{{@key}}">
+                    <input type="submit" id="add-drive-donor" value="Add Donor">
+                </form>
+            </div>
+            {{/each}}
     </section>
 </div>
 <script>
-    document.addEventListener('input', function (event) {
+    document.getElementById('blood-drive-selector').addEventListener('change', function () {
         hideAllTables();
-        var tableId = event.target.value;
+        var tableId = this.value;
         document.querySelector('[data-id="'+tableId+'"]').classList.remove("hiddenTable");
     }, false);
 
