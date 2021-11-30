@@ -41,7 +41,7 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.use(express.static('public'))
+app.use('/static', express.static('public'))
 
 // blood-banks query
 
@@ -157,6 +157,19 @@ function getDonors(res,mysql,context,complete){
     });
 }
 
+function getDonor(res,mysql,context,id,complete){
+    var sql = 'SELECT donor_id, first_name, last_name, phone, email, donor_DOB, blood_type, times_donated FROM Donors WHERE donor_id = ?';
+    var inserts = [id];
+    mysql.pool.query(sql,inserts,function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }
+        context.donor = results[0];
+        complete();
+    });
+}
+
 // blood-drives queries
 
 function getBloodDriveDonors(res,mysql,context,complete){
@@ -262,6 +275,7 @@ app.get('/blood-banks',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = false
+    context.jsscripts = ["deleteBank.js"]
     getBloodBanks(res, mysql, context, complete);
     function complete(){
         callbackCount++;
@@ -285,6 +299,21 @@ app.post('/blood-banks',function(req,res,next){
     });
 });
 
+// deletes blood bank by id
+
+app.delete('/blood-banks/:id',function(req,res,next){
+    var sql = "DELETE FROM Blood_banks WHERE `bank_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 app.get('/blood-drives',function(req,res){
     var context = {};
     var callbackCount = 0;
@@ -295,6 +324,7 @@ app.get('/blood-drives',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = false
+    context.jsscripts = ["deleteDrive.js", "deleteDriveDonor.js"]
     getBloodBanks(res, mysql, context, complete);
     getBloodDriveDonors(res, mysql, context, complete);
     getBloodDrives(res, mysql, context, complete);
@@ -331,6 +361,21 @@ app.post('/blood-drives',function(req,res,next){
     });
 });
 
+// deletes blood drive by id
+
+app.delete('/blood-drives/:id',function(req,res,next){
+    var sql = "DELETE FROM Blood_drives WHERE `drive_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 app.post('/blood-drive-donors',function(req,res,next){
     var sql = "INSERT INTO Blood_drive_donors (`drive_id`,`donor_id`) VALUES (?,?)";
     var inserts = [req.body.drive_id,req.body.donor_id];
@@ -343,6 +388,21 @@ app.post('/blood-drive-donors',function(req,res,next){
     });
 });
 
+// deletes blood drive donor by id
+
+app.delete('/blood-drive-donors/:id',function(req,res,next){
+    var sql = "DELETE FROM Blood_drive_donors WHERE `donor_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 app.get('/donors',function(req,res){
     var context = {};
     var callbackCount = 0;
@@ -353,6 +413,7 @@ app.get('/donors',function(req,res){
     context.isDonor = true
     context.isDonation = false
     context.isRequest = false
+    context.jsscripts = ["deleteDonor.js"]
     getONeg(res, mysql, context, complete);
     getOPos(res, mysql, context, complete);
     getANeg(res, mysql, context, complete);
@@ -370,6 +431,19 @@ app.get('/donors',function(req,res){
     }
 });
 
+app.delete('/donors/:id',function(req,res,next){
+    var sql = "DELETE FROM Donors WHERE `donor_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 /* Adds a donor, redirects to the donor page after adding */
 
 app.post('/donors',function(req,res,next){
@@ -384,6 +458,45 @@ app.post('/donors',function(req,res,next){
     });
 });
 
+app.get('/donors/:id',function(req,res){
+    var context = {};
+    var callbackCount = 0;
+    context.isHome = false
+    context.isBank = false
+    context.isDrive = false
+    context.isHospital = false
+    context.isDonor = true
+    context.isDonation = false
+    context.isRequest = false
+    context.jsscripts = ["updateDonor.js"]
+    getDonor(res, mysql, context, req.params.id, complete);
+    function complete(){
+        callbackCount++;
+        if (callbackCount >= 1){
+            res.render('update-donor', context);
+        }
+    }
+});
+
+app.put('/donors/:id',function(req,res,next){
+    var sql = "UPDATE Donors SET `first_name`=?,`last_name`=?,`phone`=?,`email`=?,`donor_DOB`=?, `blood_type`=?, `times_donated`=? WHERE `donor_id`=?";
+    if(req.body.phone === "null"){
+        req.body.phone = null;
+    }
+    if(req.body.email === "null"){
+        req.body.email = null;
+    }
+    var inserts = [req.body.first_name,req.body.last_name,req.body.phone,req.body.email,req.body.donor_DOB,req.body.blood_type,req.body.times_donated, req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 app.get('/donations',function(req,res){
     var context = {};
     var callbackCount = 0;
@@ -394,6 +507,7 @@ app.get('/donations',function(req,res){
     context.isDonor = false
     context.isDonation = true
     context.isRequest = false
+    context.jsscripts = ["deleteDonation.js"]
     getBloodBanks(res,mysql,context,complete);
     getDonors(res,mysql,context,complete);
     getRequests(res,mysql,context,complete);
@@ -418,6 +532,21 @@ app.post('/donations',function(req,res,next){
     });
 });
 
+// deletes donation by id
+
+app.delete('/donations/:id',function(req,res,next){
+    var sql = "DELETE FROM Donations WHERE `donation_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 app.get('/requests',function(req,res){
     var context = {};
     var callbackCount = 0;
@@ -428,6 +557,7 @@ app.get('/requests',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = true
+    context.jsscripts = ["deleteRequest.js"]
     getHospitals(res,mysql,context,complete);
     getRequests(res,mysql,context,complete);
     function complete(){
@@ -452,6 +582,21 @@ app.post('/requests',function(req,res,next){
     });
 });
 
+// deletes request by id
+
+app.delete('/requests/:id',function(req,res,next){
+    var sql = "DELETE FROM Requests WHERE `request_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
+
 app.get('/hospitals',function(req,res){
     var context = {};
     var callbackCount = 0;
@@ -462,6 +607,7 @@ app.get('/hospitals',function(req,res){
     context.isDonor = false
     context.isDonation = false
     context.isRequest = false
+    context.jsscripts = ["deleteHospital.js"]
     getHospitals(res,mysql,context,complete);
     function complete(){
         callbackCount++;
@@ -484,6 +630,21 @@ app.post('/hospitals',function(req,res,next){
         res.redirect('/hospitals');
     });
 });
+
+// deletes hospital from table
+
+app.delete('/hospitals/:id',function(req,res,next){
+    var sql = "DELETE FROM Hospitals WHERE `hospital_id` = ?"
+    var inserts = [req.params.id];
+    mysql.pool.query(sql, inserts, function(err, results, fields){
+        if(err){
+            next(err);
+            return;
+        }else{
+            res.status(202).end();
+        }
+    });
+})
 
 app.use(function(req,res){
     res.status(404);

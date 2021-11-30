@@ -52,10 +52,10 @@
                     <td>{{this.city}}</td>
                     <td>{{this.zip}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.drive_id}})">Delete</button>
+                        <button onclick="deleteDrive({{this.drive_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/requests/{{this.drive_id}}">Edit</a>
+                        <a href="/blood-drives/{{this.drive_id}}">Edit</a>
                     </td>
                 </tr>
                 {{/each}}
@@ -99,10 +99,7 @@
                             <td>{{this.blood_type}}</td>
                             <td>{{this.times_donated}}</td>
                             <td class="delete-column">
-                                <button onclick="deleteBank({{this.donor_id}})">Delete</button>
-                            </td>
-                            <td class="edit-column">
-                                <a href="/donors/{{this.donor_id}}">Edit</a>
+                                <button onclick="deleteDriveDonor({{this.donor_id}})">Delete from Blood Drive</button>
                             </td>
                         </tr>
                     </tbody>

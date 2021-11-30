@@ -60,7 +60,7 @@
                 <td>{{dateFormat this.request_date}}</td>
                 <td>{{yesNo this.request_filled}}</td>
                 <td class="delete-column">
-                    <button onclick="deleteBank({{this.request_id}})">Delete</button>
+                    <button onclick="deleteRequest({{this.request_id}})">Delete</button>
                 </td>
                 <td class="edit-column">
                     <a href="/requests/{{this.request_id}}">Update</a>

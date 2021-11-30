@@ -42,10 +42,10 @@
                     <td>{{this.zip}}</td>
                     <td>{{this.phone}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.hospital_id}})">Delete</button>
+                        <button onclick="deleteHospital({{this.hospital_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/donors/{{this.hospital_id}}">Edit</a>
+                        <a href="/hospitals/{{hospital_id}}">Edit</a>
                     </td>
                 </tr>
             {{/each}}

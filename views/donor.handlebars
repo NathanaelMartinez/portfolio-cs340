@@ -63,10 +63,10 @@
                         <td>{{this.blood_type}}</td>
                         <td>{{this.times_donated}}</td>
                         <td class="delete-column">
-                            <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                            <button onclick="deleteDonor({{donor_id}})">Delete</button>
                         </td>
                         <td class="edit-column">
-                            <a href="/donors/{{this.donor_id}}">Edit</a>
+                            <a href="/donors/{{donor_id}}">Update</a>
                         </td>
                     </tr>
                 {{/each}}
@@ -116,10 +116,10 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
+                        <a href="/donors/{{donor_id}}">Edit</a>
                     </td>
                 </tr>
             </tbody>
@@ -154,7 +154,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -192,7 +192,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -230,7 +230,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -268,7 +268,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -306,7 +306,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -344,7 +344,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -382,7 +382,7 @@
                     <td>{{this.blood_type}}</td>
                     <td>{{this.times_donated}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donor_id}})">Delete</button>
+                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donors/{{this.donor_id}}">Edit</a>
@@ -394,9 +394,9 @@
     </section>
 </div>
 <script>
-    document.addEventListener('input', function (event) {
+    document.getElementById('blood_type_search').addEventListener('change', function () {
         hideAllTables();
-        var tableId = event.target.value;
+        var tableId = this.value;
         document.querySelector('[data-id="'+tableId+'"]').classList.remove("hiddenTable");
     }, false);
 

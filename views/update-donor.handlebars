@@ -1,0 +1,29 @@
+<html>
+<h1>Update {{donor.first_name}} {{donor.last_name}}:</h1>
+<form id="update-donor" action="/donors" method="post">
+    <label for="first_name">First name</label><br>
+    <input size="15" type="text" pattern=[a-z]{1-30} id="first_name" name="first_name" value="{{donor.first_name}}" required><br>
+    <label for="last_name">Last name</label><br>
+    <input size="15" type="text" pattern=[a-z]{1-30} id="last_name" name="last_name" value="{{donor.last_name}}" required><br>
+    <label for="phone">Phone (optional)</label><br>
+    <input size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone" value="{{donor.phone}}"><br>
+    <label for="email">E-mail (optional)</label><br>
+    <input size="15" type="email" id="email" name="email" value"{{donor.email}}"><br>
+    <label for="donor_DOB">Date of birth</label><br>
+    <input size="15" type="date" id="donor_DOB" name="donor_DOB" value="{{dateFormat donor.donor_DOB}}" required><br>
+    <label for="blood_type">Blood type</label><br>
+    <select name="blood_type" id="blood_type" value="{{donor.blood_type}}">
+        <option value="O-">O-</option>
+        <option value="O+">O+</option>
+        <option value="A-">A-</option>
+        <option value="A+">A+</option>
+        <option value="B-">B-</option>
+        <option value="B+">B+</option>
+        <option value="AB-">AB-</option>
+        <option value="AB+">AB+</option>
+    </select><br>
+    <label for="times_donated">Number of Donations</label><br>
+    <input min="1" size="15" type="number" id="times_donated" name="times_donated" value="{{donor.times_donated}}" required><br><br>
+</form>
+<button onclick="updateDonor({{donor.id}})">Update</button>
+</html>

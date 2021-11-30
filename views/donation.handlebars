@@ -64,7 +64,7 @@
                     <td>{{this.amt_donated}}</td>
                     <td>{{dateFormat this.date_collected}}</td>
                     <td class="delete-column">
-                        <button onclick="deleteBank({{this.donation_id}})">Delete</button>
+                        <button onclick="deleteDonation({{this.donation_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
                         <a href="/donations/{{this.donation_id}}">Edit</a>
