@@ -1,9 +1,12 @@
-function deleteDriveDonor(id){
+function deleteDriveDonor(donor_id, drive_id){
+    //console.log(drive_id);
     $.ajax({
-        url: '/blood-drive-donors/' + id,
+        url: '/blood-drive-donors/' + donor_id,
         type: 'DELETE',
         success: function(result){
-            window.location.replace(/blood-drives/);
+            //debugger;
+            window.history.pushState("","",'/blood-drives?drive_id=' + drive_id +'#blood-drive-donors');
+            window.location.reload();
         }
     })
 };

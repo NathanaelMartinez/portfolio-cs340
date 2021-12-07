@@ -1,29 +1,35 @@
 
-<div class="blood-drives">
+<div class="web-page">
     <section class="info">
         <h3>Blood Drive Database</h3>
         <p>
-            This page will allow you to enter and update information on blood drives you hosted.
+            This page will allow you to enter and update information on blood drives you hosted
         </p>
     </section>
     <section class="add-entry">
         <h3>Add Entry</h3>
         <form id='add-drive' action="/blood-drives" method="POST">
             <label for="bank_id">Blood Bank</label><br>
-            <select name="bank_id" id="bank_id" required>
+            <select class="entryInput" name="bank_id" id="bank_id" required>
                 <option disabled selected value></option>
                 {{#each banks}}
                     <option value="{{this.bank_id}}">{{this.name}}</option>
                 {{/each}}
             </select><br>
+            <label for="drive_type">Blood Drive Type</label><br>
+            <select class="entryInput" name="drive_type" id="drive_typpe" required>
+                <option disabled selected value></option>
+                <option value="Donor center">Donor center</option>
+                <option value="Mobile Drive">Mobile Drive</option>
+            </select><br>
             <label for="drive_date">Blood Drive Date</label><br>
-            <input size="15" type="date" id="drive_date" name="drive_date" required><br>
+            <input class="entryInput" size="15" type="date" id="drive_date" name="drive_date" required><br>
             <label for="amt_collected">Amount Donated</label><br>
-            <input size="15" min="1" type="number" id="amt_collected" name="amt_collected" required><br>
+            <input class="entryInput" size="15" min="1" type="number" id="amt_collected" name="amt_collected" required><br>
             <label for="city">City</label><br>
-            <input size="15" type="text" pattern=[a-z]{4-40} id="city" name="city" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{4-40} id="city" name="city" required><br>
             <label for="zip">Zip Code</label><br>
-            <input size="15" pattern=[0-9]{5} type="text" id="zip" name="zip" required><br><br>
+            <input class="entryInput" size="15" pattern=[0-9]{5} type="text" id="zip" name="zip" required><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
@@ -34,10 +40,11 @@
                 <tr>
                     <th>Blood Drive ID</th>
                     <th>Blood Bank</th>
+                    <th>Drive Type</th>
                     <th>Date</th>
                     <th>Amount Donated</th>
                     <th>City</th>
-                    <th>Zip</th>
+                    <th>Zip Code</th>
                     <th id="delete-column"> </th>
                     <th id="edit-column"> </th>
                 </tr>
@@ -47,6 +54,7 @@
                 <tr>
                     <td>{{this.drive_id}}</td>
                     <td>{{this.name}}</td>
+                    <td>{{this.drive_type}}</td>
                     <td>{{dateFormat this.drive_date}}</td>
                     <td>{{this.amt_collected}}</td>
                     <td>{{this.city}}</td>
@@ -55,25 +63,25 @@
                         <button onclick="deleteDrive({{this.drive_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/blood-drives/{{this.drive_id}}">Edit</a>
+                        <a href="/blood-drives/{{this.drive_id}}"><button type="button">Update</button></a>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
-    </section>
-    <section class="blood-drive-donors">
-        <label for="blood-drive-selector">Select a Blood Drive by its ID to view Donors</label>
-        <select name="blood-drive-selector" id="blood-drive-selector">
+        <section class="blood-drive-donors" id="blood-drive-donors">
+            <label for="blood-drive-selector">Select a Blood Drive by its ID to view Donors</label>
+            <select name="blood-drive-selector" id="blood-drive-selector">
                 <option value="">None</option>
                 {{#each drive_selects}}
-                    <option value="{{this}}">{{this}}</option>
+                    <option value="{{this}}" {{tableSelect ../drive_id this}}>{{this}}</option>
                 {{/each}}
             </select><br>
             {{#each drive_tables}}
-            <div class="driveTable hiddenTable" data-id="{{@key}}">
+            <div class="{{tableHide ../drive_id @key}}" data-id="{{@key}}">
+                {{#if (isDefined this.[0].donor_id)}}
+                <h3>Donors Who Attended Blood Drive {{@key}}</h3>
                 <table id="blood-drive-table-{{@key}}">
-                    {{#if (isDefined this.[0].donor_id)}}
                     <thead>
                         <tr>
                             <th>Donor ID</th>
@@ -99,21 +107,21 @@
                             <td>{{this.blood_type}}</td>
                             <td>{{this.times_donated}}</td>
                             <td class="delete-column">
-                                <button onclick="deleteDriveDonor({{this.donor_id}})">Delete from Blood Drive</button>
+                                <button onclick="deleteDriveDonor({{this.donor_id}}, {{@../key}})">Remove from Blood Drive</button>
                             </td>
                         </tr>
                     </tbody>
                     {{/each}}
+                    {{else}}
+                        <h3>No Donors Attended Blood Drive {{@key}}</h3>
                     {{/if}}
                 </table>
                 <form id='add-drive-donor' action="/blood-drive-donors" method="POST">
                     <label for="donor_id">Add donor by name to selected blood drive</label>
                     <select name="donor_id" id="donor_id" required>
                         <option disabled selected value></option>
-                        {{#each donor_selects}}
-                            {{#each this}}
+                        {{#each (lookup ../donor_selects @key)}}
                             <option value="{{donor_id}}">{{first_name}} {{last_name}}</option>
-                            {{/each}}
                         {{/each}}
                     </select>
                     <input type="hidden" name="drive_id" value="{{@key}}">
@@ -121,6 +129,7 @@
                 </form>
             </div>
             {{/each}}
+        </section>
     </section>
 </div>
 <script>

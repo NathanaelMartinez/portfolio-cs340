@@ -1,5 +1,4 @@
-
-<div class="blood-bank">
+<div class="web-page">
     <section class="info">
         <h3>Blood Bank Database</h3>
         <p>
@@ -10,19 +9,19 @@
         <h3>Add Entry</h3>
         <form id="add-bank" action="/blood-banks" method="POST">
             <label for="name">Name</label><br>
-            <input size="15" type="text" pattern=[a-z]{5-40} id="name" name="name" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{5-40} id="name" name="name" required><br>
             <label for="city">City</label><br>
-            <input size="15" type="text" pattern=[a-z]{2-40} id="city" name="city" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{2-40} id="city" name="city" required><br>
             <label for="street">Street</label><br>
-            <input size="15" type="text" pattern=[a-z]{4-40} id="street" name="street" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{4-40} id="street" name="street" required><br>
             <label for="zip">Zip Code</label><br>
-            <input size="15" type="text" pattern=[0-9]{5} id="zip" name="zip" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[0-9]{5} id="zip" name="zip" required><br>
             <label for="phone">Phone</label><br>
-            <input size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone" required><br><br>
+            <input class="entryInput" size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone" required><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
-    <<section class="entry-display">
+    <section class="entry-display">
         <h3>Blood Banks</h3>
         <table id="entry-list">
             <thead>
@@ -50,12 +49,11 @@
                         <button onclick="deleteBank({{this.bank_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/blood-banks/{{this.bank_id}}">Edit</a>
+                        <a href="/blood-banks/{{this.bank_id}}"><button type="button">Update</button></a>
                     </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
     </section>
-    <hr>
 </div>

@@ -1,4 +1,4 @@
-<div class="blood-bank">
+<div class="web-page">
     <section class="info">
         <h3>Donor Database</h3>
         <p>
@@ -9,17 +9,18 @@
         <h3>Add Entry</h3>
         <form id='add-donor' action="/donors" method="POST">
             <label for="first_name">First name</label><br>
-            <input size="15" type="text" pattern=[a-z]{1-30} id="first_name" name="first_name" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{1-30} id="first_name" name="first_name" required><br>
             <label for="last_name">Last name</label><br>
-            <input size="15" type="text" pattern=[a-z]{1-30} id="last_name" name="last_name" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{1-30} id="last_name" name="last_name" required><br>
             <label for="phone">Phone (optional)</label><br>
-            <input size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone"><br>
+            <input class="entryInput" size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone"><br>
             <label for="email">E-mail (optional)</label><br>
-            <input size="15" type="email" id="email" name="email"><br>
+            <input class="entryInput" size="15" type="email" id="email" name="email"><br>
             <label for="donor_DOB">Date of birth</label><br>
-            <input size="15" type="date" id="donor_DOB" name="donor_DOB" required><br>
+            <input class="entryInput" size="15" type="date" id="donor_DOB" name="donor_DOB" required><br>
             <label for="blood_type">Blood type</label><br>
-            <select name="blood_type" id="blood_type">
+            <select class="entryInput" name="blood_type" id="blood_type" required>
+                <option disabled selected value=""></option>
                 <option value="O-">O-</option>
                 <option value="O+">O+</option>
                 <option value="A-">A-</option>
@@ -30,7 +31,7 @@
                 <option value="AB+">AB+</option>
             </select><br>
             <label for="times_donated">Number of Donations</label><br>
-            <input min="1" size="15" type="number" id="times_donated" name="times_donated" required><br><br>
+            <input class="entryInput" min="1" size="15" type="number" id="times_donated" name="times_donated" required><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
@@ -57,6 +58,58 @@
                         <td>{{this.donor_id}}</td>
                         <td>{{this.first_name}}</td>
                         <td>{{this.last_name}}</td>
+                        <td>{{ifNull this.phone}}</td>
+                        <td>{{ifNull this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        <section class="bTypeSearch">
+            <label for="blood_type_search">Search Donors by Blood Type</label>
+            <select name="blood_type_search" id="blood_type_search">
+                <option value="O">None</option>
+                <option value="1">O-</option>
+                <option value="2">O+</option>
+                <option value="3">A-</option>
+                <option value="4">A+</option>
+                <option value="5">B-</option>
+                <option value="6">B+</option>
+                <option value="7">AB-</option>
+                <option value="8">AB+</option>
+            </select>
+            <br><br>
+            <table class="bTypeTable hiddenTable" data-id="1">
+                {{#if o_neg}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each o_neg}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
                         <td>{{this.phone}}</td>
                         <td>{{this.email}}</td>
                         <td>{{dateFormat this.donor_DOB}}</td>
@@ -66,331 +119,279 @@
                             <button onclick="deleteDonor({{donor_id}})">Delete</button>
                         </td>
                         <td class="edit-column">
-                            <a href="/donors/{{donor_id}}">Update</a>
+                            <a href="/donors/{{donor_id}}"><button type="button">Update</button></a>
                         </td>
                     </tr>
+                </tbody>
                 {{/each}}
-            </tbody>
-        </table>
-    </section>
-    <section class="bTypeSearch">
-        <label for="blood_type_search">Search Donors by Blood Type</label>
-        <select name="blood_type_search" id="blood_type_search">
-            <option value="O">None</option>
-            <option value="1">O-</option>
-            <option value="2">O+</option>
-            <option value="3">A-</option>
-            <option value="4">A+</option>
-            <option value="5">B-</option>
-            <option value="6">B+</option>
-            <option value="7">AB-</option>
-            <option value="8">AB+</option>
-        </select>
-        <br><br>
-        <table class="bTypeTable hiddenTable" data-id="1">
-            {{#if o_neg}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each o_neg}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="2">
-            {{#if o_pos}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each o_pos}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="3">
-           {{#if a_neg}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each a_neg}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="4">
-           {{#if a_pos}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each a_pos}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="5">
-           {{#if b_neg}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each b_neg}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="6">
-           {{#if b_pos}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each b_pos}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="7">
-           {{#if ab_neg}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each ab_neg}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
-        <table class="bTypeTable hiddenTable" data-id="8">
-           {{#if ab_pos}}
-            <thead>
-                <tr>
-                    <th>Donor ID</th>
-                    <th>First name</th>
-                    <th>Last name</th>
-                    <th>Phone</th>
-                    <th>E-mail</th>
-                    <th>Date of birth</th>
-                    <th>Blood type</th>
-                    <th>Donations</th>
-                    <th id="delete-column"> </th>
-                    <th id="edit-column"> </th>
-                </tr>
-            </thead>
-            {{/if}}
-            {{#each ab_pos}}
-            <tbody>
-                <tr>
-                    <td>{{this.donor_id}}</td>
-                    <td>{{this.first_name}}</td>
-                    <td>{{this.last_name}}</td>
-                    <td>{{this.phone}}</td>
-                    <td>{{this.email}}</td>
-                    <td>{{dateFormat this.donor_DOB}}</td>
-                    <td>{{this.blood_type}}</td>
-                    <td>{{this.times_donated}}</td>
-                    <td class="delete-column">
-                        <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
-                    </td>
-                    <td class="edit-column">
-                        <a href="/donors/{{this.donor_id}}">Edit</a>
-                    </td>
-                </tr>
-            </tbody>
-            {{/each}}
-        </table>
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="2">
+                {{#if o_pos}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each o_pos}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="3">
+            {{#if a_neg}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each a_neg}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="4">
+            {{#if a_pos}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each a_pos}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="5">
+            {{#if b_neg}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each b_neg}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="6">
+            {{#if b_pos}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each b_pos}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="7">
+            {{#if ab_neg}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each ab_neg}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+            <table class="bTypeTable hiddenTable" data-id="8">
+            {{#if ab_pos}}
+                <thead>
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>First name</th>
+                        <th>Last name</th>
+                        <th>Phone</th>
+                        <th>E-mail</th>
+                        <th>Date of birth</th>
+                        <th>Blood type</th>
+                        <th>Donations</th>
+                        <th id="delete-column"> </th>
+                        <th id="edit-column"> </th>
+                    </tr>
+                </thead>
+                {{/if}}
+                {{#each ab_pos}}
+                <tbody>
+                    <tr>
+                        <td>{{this.donor_id}}</td>
+                        <td>{{this.first_name}}</td>
+                        <td>{{this.last_name}}</td>
+                        <td>{{this.phone}}</td>
+                        <td>{{this.email}}</td>
+                        <td>{{dateFormat this.donor_DOB}}</td>
+                        <td>{{this.blood_type}}</td>
+                        <td>{{this.times_donated}}</td>
+                        <td class="delete-column">
+                            <button onclick="deleteDonor({{this.donor_id}})">Delete</button>
+                        </td>
+                        <td class="edit-column">
+                            <a href="/donors/{{this.donor_id}}"><button type="button">Update</button></a>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+        </section>
     </section>
 </div>
 <script>

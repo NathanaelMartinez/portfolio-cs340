@@ -1,0 +1,18 @@
+<div class="web-page">
+     <section class="info">
+          <h1>Update {{hospital.name}}:</h1>
+     </section>
+     <section class="add-entry">
+          <form id="update-hospital" action="/hospital" method="post">
+               <label for="name">Name</label><br>
+               <input class="entryInput" size="15" type="text" pattern=[a-z]{5-40} id="name" value="{{hospital.name}}" name="name" required><br>
+               <label for="city">City</label><br>
+               <input class="entryInput" size="15" type="text" pattern=[a-z]{3-40} id="city" value="{{hospital.city}}" name="city" required><br>
+               <label for="zip">Zip Code</label><br>
+               <input class="entryInput" size="15" pattern=[0-9]{5} type="text" id="zip" value="{{hospital.zip}}" name="zip" required><br>
+               <label for="phone">Phone</label><br>
+               <input class="entryInput" size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" value="{{hospital.phone}}" name="phone" required><br><br>
+          </form>
+          <button onclick="updateHospital({{hospital.hospital_id}})">Update</button>
+     </section>
+</div>

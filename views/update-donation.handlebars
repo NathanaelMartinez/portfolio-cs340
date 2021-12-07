@@ -1,0 +1,36 @@
+<div class="web-page">
+    <section class="info">
+        <h1>Update donation:</h1>
+    </section>
+    <section class="add-entry">
+        <form id="update-donation" action="/donations" method="post">
+            <label for="bank-selector">Blood Bank</label><br>
+            <select class="entryInput" name="bank_id" id="bank-selector" required>
+                {{#each banks}}
+                    <option value="{{bank_id}}">{{name}}</option>
+                {{/each}}
+            </select><br>
+            <label for="donor_id">Donor</label><br>
+            <select class="entryInput" name="donor_id" id="donor-selector" required>
+                {{#each donors}}
+                    <option value="{{donor_id}}">{{first_name}} {{last_name}} ({{blood_type}})</option>
+                {{/each}}
+            </select><br>
+            <label for="request_id">Request to be filled (Optional)</label><br>
+            <select class="entryInput" name="request_id" id="request-selector">
+                <option value="">None</option>
+                {{#each requests}}
+                    <option value="{{request_id}}">{{request_id}} ({{request_type}} {{dateFormat request_date}})</option>
+                {{/each}}
+            </select><br>
+            <label for="amt_donated">Amount donated</label><br>
+            <input class="entryInput" size="15" type="number" min="1" id="amt_donated" value="{{donation.amt_donated}}" name="amt_donated"><br>
+            <label for="date_collected">Date collected</label><br>
+            <input class="entryInput" size="15" type="date" id="date_collected" value="{{ISOFormat donation.date_collected}}" name="date_collected"><br><br>
+        </form>
+        <button onclick="updateDonation({{donation.donation_id}})">Update</button>
+    </section>
+</div>
+<script defer>selectBank({{donation.bank_id}});</script>
+<script defer>selectDonor({{donation.donor_id}});</script>
+<script defer>selectRequest({{donation.request_id}});</script>

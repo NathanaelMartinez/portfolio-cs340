@@ -1,4 +1,4 @@
-<div class="Hospitals">
+<div class="web-page">
     <section class="info">
         <h3>Hospitals Database</h3>
         <p>
@@ -9,17 +9,17 @@
         <h3>Add Entry</h3>
         <form id='add-hospital' action="/hospitals" method="POST">
             <label for="name">Name</label><br>
-            <input size="15" type="text" pattern=[a-z]{5-40} id="name" name="name" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{5-40} id="name" name="name" required><br>
             <label for="city">City</label><br>
-            <input size="15" type="text" pattern=[a-z]{3-40} id="city" name="city" required><br>
+            <input class="entryInput" size="15" type="text" pattern=[a-z]{3-40} id="city" name="city" required><br>
             <label for="zip">Zip Code</label><br>
-            <input size="15" pattern=[0-9]{5} type="text" id="zip" name="zip" required><br>
+            <input class="entryInput" size="15" pattern=[0-9]{5} type="text" id="zip" name="zip" required><br>
             <label for="phone">Phone</label><br>
-            <input size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone" required><br><br>
+            <input class="entryInput" size="15" placeholder="555-111-1111" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" type="tel" id="phone" name="phone" required><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
-    <<section class="entry-display">
+    <section class="entry-display">
     <h3>Hospitals</h3>
     <table id="entry-list">
         <thead>
@@ -45,7 +45,7 @@
                         <button onclick="deleteHospital({{this.hospital_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/hospitals/{{hospital_id}}">Edit</a>
+                        <a href="/hospitals/{{hospital_id}}"><button type="button">Update</button></a>
                     </td>
                 </tr>
             {{/each}}

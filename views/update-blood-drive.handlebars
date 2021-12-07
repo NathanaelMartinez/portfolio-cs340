@@ -1,0 +1,31 @@
+<div class="web-page">
+     <section class="info">
+          <h1>Update Blood Drive:</h1>
+     </section>
+     <section class="add-entry">
+          <form id="update-blood-drive" action="/blood-drives" method="post">
+               <label for="bank_id">Blood Bank</label><br>
+               <select class="entryInput" name="bank_id" id="bank-selector" required>
+                    {{#each banks}}
+                         <option value="{{bank_id}}">{{name}}</option>
+                    {{/each}}
+               </select><br>
+               <label for="drive_type">Blood Drive Type</label><br>
+               <select class="entryInput" name="drive_type" id="drive_typpe" required>
+                    <option value="{{drive.drive_type}}">{{drive.drive_type}}</option>
+                    <option value="Donor center">Donor center</option>
+                    <option value="Mobile Drive">Mobile Drive</option>
+               </select><br>
+               <label for="drive_date">Blood Drive Date</label><br>
+               <input class="entryInput" size="15" type="date" id="drive_date" value="{{ISOFormat drive.drive_date}}" name="drive_date" required><br>
+               <label for="amt_collected">Amount Donated</label><br>
+               <input class="entryInput" size="15" min="1" type="number" id="amt_collected" value="{{drive.amt_collected}}" name="amt_collected" required><br>
+               <label for="city">City</label><br>
+               <input class="entryInput" size="15" type="text" pattern=[a-z]{4-40} id="city" value="{{drive.city}}" name="city" required><br>
+               <label for="zip">Zip Code</label><br>
+               <input class="entryInput" size="15" pattern=[0-9]{5} type="text" id="zip" value="{{drive.zip}}" name="zip" required><br><br>
+          </form>
+          <button onclick="updateDrive({{drive.drive_id}})">Update</button>
+     </section>
+</div>
+<script defer>selectBank({{drive.bank_id}});</script>

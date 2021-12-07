@@ -1,39 +1,38 @@
-
-<div class="blood-bank">
+<div class="web-page">
     <section class="info">
         <h3>Blood Donation Database</h3>
         <p>
-            This page allows you to update information about the blood donations in your system.
+            This page allows you to update information about the blood donations in your system
         </p>
     </section>
     <section class="add-entry">
         <h3>Add Entry</h3>
         <form id='add-donation' action="/donations" method="POST">
             <label for="bank_id">Blood Bank</label><br>
-            <select name="bank_id" id="bank_id" required>
+            <select class="entryInput" name="bank_id" id="bank_id" required>
                 <option disabled selected value></option>
                 {{#each banks}}
                     <option value="{{this.bank_id}}">{{this.name}}</option>
                 {{/each}}
             </select><br>
             <label for="donor-id">Donor</label><br>
-            <select name="donor_id" id="donor_id" required>
+            <select class="entryInput" name="donor_id" id="donor_id" required>
                 <option disabled selected value></option>
                 {{#each donors}}
-                    <option value="{{this.donor_id}}">{{this.first_name}} {{this.last_name}}</option>
+                    <option value="{{this.donor_id}}">{{this.first_name}} {{this.last_name}} ({{this.blood_type}})</option>
                 {{/each}}
             </select><br>
             <label for="request_id">Request to be filled (Optional)</label><br>
-            <select name="request_id" id="request_id">
+            <select class="entryInput" name="request_id" id="request_id">
                 <option value=""></option>
                 {{#each requests}}
-                    <option value="{{this.request_id}}">{{this.request_id}} ({{this.request_type}} {{dateFormat this.request_date}})</option>
+                    <option value="{{this.request_id}}">{{this.request_type}} {{dateFormat this.request_date}}</option>
                 {{/each}}
             </select><br>
             <label for="amt_donated">Amount donated</label><br>
-            <input size="15" type="number" min="1" id="amt_donated" name="amt_donated"><br>
+            <input class="entryInput" size="15" type="number" min="1" id="amt_donated" name="amt_donated"><br>
             <label for="date_collected">Date collected</label><br>
-            <input size="15" type="date" id="date_collected" name="date_collected"><br><br>
+            <input class="entryInput" size="15" type="date" id="date_collected" name="date_collected"><br><br>
             <input type="submit" id="submitEntry" value="Add Entry">
         </form>
     </section>
@@ -60,19 +59,18 @@
                     <td>{{this.name}}</td>
                     <td>{{this.first_name}} {{this.last_name}}</td>
                     <td>{{this.blood_type}}</td>
-                    <td>{{ifNull this.request_id}}</td>
+                    <td>{{ifNull this.request_type}} {{dateFormat this.request_date}}</td>
                     <td>{{this.amt_donated}}</td>
                     <td>{{dateFormat this.date_collected}}</td>
                     <td class="delete-column">
                         <button onclick="deleteDonation({{this.donation_id}})">Delete</button>
                     </td>
                     <td class="edit-column">
-                        <a href="/donations/{{this.donation_id}}">Edit</a>
+                        <a href="/donations/{{this.donation_id}}"><button type="button">Update</button></a>
                     </td>
                 </tr>
             {{/each}}
             </tbody>
         </table>
     </section>
-    <hr>
 </div>

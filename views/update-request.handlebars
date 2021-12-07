@@ -1,0 +1,38 @@
+<div class="web-page">
+    <section class="info">
+        <h1>Update Request:</h1>
+    </section>
+    <section class="add-entry">
+        <form id="update-request" action="/requests" method="post">
+            <label for="hospital-selector">Blood Bank</label><br>
+            <select class="entryInput" name="hospital_id" id="hospital-selector" required>
+                {{#each hospitals}}
+                    <option value="{{this.hospital_id}}">{{this.name}}</option>
+                {{/each}}
+            </select><br>
+            <label for="request_amt">Amount Requested</label><br>
+            <input class="entryInput" size="15" min="1" type="number" id="amount" value="{{request.request_amt}}" name="request_amt" required><br>
+            <label for="request_type">Blood type requested</label><br>
+            <select class="entryInput" name="request_type" id="request_type" required>
+                <option value="{{request.request_type}}">{{request.request_type}}</option>
+                <option value="O-">O-</option>
+                <option value="O+">O+</option>
+                <option value="A-">A-</option>
+                <option value="A+">A+</option>
+                <option value="B-">B-</option>
+                <option value="B+">B+</option>
+                <option value="AB-">AB-</option>
+                <option value="AB+">AB+</option>
+            </select><br>
+            <label for="request_date">Request Date</label><br>
+            <input class="entryInput" size="15" type="date" id="request-date" name="request_date" value="{{ISOFormat request.request_date}}" required><br>
+            <label for="request_filled">Filled</label><br>
+            <select class="entryInput" name="request_filled" id="request_filled" required>
+                <option value="">No</option>
+                <option value="1">Yes</option>
+            </select><br><br>
+        </form>
+        <button onclick="updateRequest({{request.request_id}})">Update</button>
+    </section>
+</div>
+<script defer>selectHospital({{request.hospital_id}});</script>

@@ -1,5 +1,6 @@
 .topnav {
   background-color: #333;
+  width: 100%;
   overflow: hidden;
 }
 
@@ -8,7 +9,7 @@
   float: left;
   color: #f2f2f2;
   text-align: center;
-  padding: 14px 16px;
+  padding: 14px 30px;
   text-decoration: none;
   font-size: 17px;
 }
@@ -35,41 +36,72 @@ th, td {
   text-align: left;
 }
 
-.info {
+.entryInput {
+  width: 215px;
+}
+
+.web-page {
   position: relative;
-  left: 100px;
-  top: 30px;
+}
+
+.info {
+  position: absolute;
+  left: 70px;
+  top: 15px;
 }
 
 .add-entry {
-  position: relative;
-  left: 100px;
-  top: 30px;
+  position: absolute;
+  left: 70px;
+  top: 100px;
+}
+
+.button {
+  font: bold 11px Arial;
+  text-decoration: none;
+  background-color: #EEEEEE;
+  color: #333333;
+  padding: 2px 6px 2px 6px;
+  border-top: 1px solid #CCCCCC;
+  border-right: 1px solid #333333;
+  border-bottom: 1px solid #333333;
+  border-left: 1px solid #CCCCCC;
 }
 
 .entry-display {
   position: absolute;
-  left: 335px;
-  top: 165px;
+  left: 380px;
+  top: 100px;
+  padding-right: 150px;
 }
 
 .home-intro {
+  position: absolute;
+  margin-left: 70px;
+  margin-right: 50%;
+  margin-top: 5%;
+}
+
+.welcome {
   position: relative;
-  margin-left: 100px;
-  margin-right: 150px;
-  margin-top: 50px;
+  padding-top: 20px;
+}
+
+#giveBloodImage {
+  position: absolute;
+  right: 5%;
+  top: 30px;
 }
 
 .bTypeSearch {
   position: relative;
-  left: 335px;
-  margin-bottom: 100px;
+  top: 50px;
 }
 
 .blood-drive-donors {
   position: relative;
-  left: 335px;
-  margin-bottom: 100px;
+  top: 50px;
+  padding-bottom: 200px;
 }
 
 .hiddenTable {
